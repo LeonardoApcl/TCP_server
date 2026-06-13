@@ -80,14 +80,20 @@ void enviar_msgbroadcast(char *texto){
     mensagem[3] = (char)('0' + (tam / 1) % 10);
 
     // A alterar com a lista de usuários, onde praticamente é um for no socket de mensagens
-    int lista_portas[] = {6000, 6001};
-    int total_usuarios = 2;
+    int lista_portas[] = {6000, 6001, 6002};
+    int total_usuarios = 3;
 
     for(int i = 0; i < total_usuarios; i++)
     {
         if(lista_portas[i] != PORTA_USUARIO)
         {
-            socket_enviar_mensagem(mensagem, "127.0.0.1", lista_portas[i]);
+            // Evitar sobrescrita na mensagem no broadcast
+            char copia[TAM_MENSAGEM];
+            memset(copia, 0, TAM_MENSAGEM);
+            strcpy(copia, mensagem);
+            
+            socket_enviar_mensagem(copia, "127.0.0.1", lista_portas[i]);
+           
         }
     }
 }
@@ -96,7 +102,7 @@ void enviar_msgdireta(char *destinatario, char *texto){
     char mensagem[TAM_MENSAGEM];
     memset(mensagem, 0, TAM_MENSAGEM);
     strcat(mensagem, "D000");
-    strcat(mensagem, destinatario);
+    strcat(mensagem, NOME_USUARIO);
     strcat(mensagem, "|");
     strcat(mensagem, texto);
     strcat(mensagem, "|");
@@ -114,6 +120,10 @@ void enviar_msgdireta(char *destinatario, char *texto){
     else if(strcmp(destinatario, "pedro") == 0)
     {
         socket_enviar_mensagem(mensagem,"127.0.0.1",6000);
+    }
+    else if(strcmp(destinatario, "bob") == 0)
+    {
+        socket_enviar_mensagem(mensagem,"127.0.0.1",6002);
     }
     else if(strcmp(destinatario, "broadcast") == 0)
     {
@@ -164,7 +174,7 @@ void menu()
 
         strcpy(destinatario, entrada);
         strcpy(texto, separador + 1);
-        
+
         char mensagem[TAM_MENSAGEM];
         memset((void *) mensagem,(int) NULL, TAM_MENSAGEM);
         

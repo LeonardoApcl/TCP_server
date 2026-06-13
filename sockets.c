@@ -208,6 +208,7 @@ int socket_receber_mensagem(char *mensagem, int sock)
 
     /* Recebe a mensagem do cliente */
     resultado = receber_mensagem(mensagem, socket_cliente);
+    
     if (resultado < 0)
     {
         resultado = enviar_mensagem("N000", socket_cliente);

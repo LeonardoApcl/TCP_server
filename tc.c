@@ -80,8 +80,8 @@ void enviar_msgbroadcast(char *texto){
     mensagem[3] = (char)('0' + (tam / 1) % 10);
 
     // A alterar com a lista de usuários, onde praticamente é um for no socket de mensagens
-    int lista_portas[] = {6000, 6001, 6002};
-    int total_usuarios = 3;
+    int lista_portas[] = {6000, 6001, 6002, 6003};
+    int total_usuarios = 4;
 
     for(int i = 0; i < total_usuarios; i++)
     {
@@ -124,6 +124,10 @@ void enviar_msgdireta(char *destinatario, char *texto){
     else if(strcmp(destinatario, "bob") == 0)
     {
         socket_enviar_mensagem(mensagem,"127.0.0.1",6002);
+    }
+     else if(strcmp(destinatario, "hugo") == 0)
+    {
+        socket_enviar_mensagem(mensagem,"127.0.0.1",6003);
     }
     else if(strcmp(destinatario, "broadcast") == 0)
     {

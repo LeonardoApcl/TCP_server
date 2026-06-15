@@ -78,7 +78,7 @@ void enviar_lista_usuarios()
         char registro[64];
 
         sprintf(registro,
-                "%s|%s|%d",
+                "%s|%s|%s",
                 clientes[i].nome,
                 clientes[i].IP,
                 clientes[i].porta);
@@ -106,6 +106,18 @@ void enviar_lista_usuarios()
     }
 }
 
+void mostrar_clientes() {
+    int i;
+    for(i = 0; i < MAX_CLIENTES; i++) {
+        if(!strcmp(clientes[i].nome, "")) {
+            printf("Cliente vazio!\n");
+        }
+        else {
+            printf("Cliente %s tá aqui na posicao %d\n", clientes[i].nome, i);
+        }
+    }
+}
+
 void menu()
 {
     int sock = criar_socket(PORTA_SERVIDOR_TCP);
@@ -125,7 +137,7 @@ void menu()
         tam_str[3] = '\0';
         tam = atoi(tam_str);
 
-        char* dados = mensagem + 4;
+        char* dados = mensagem + 5;
 
         switch(tipo)
     {
@@ -183,11 +195,13 @@ void menu()
     }
 
         enviar_lista_usuarios();
+        mostrar_clientes();
     }
 }
 
 int main()
 {
+    int k;
     // int sock;
 #ifdef WIN
     WORD wPackedValues;
@@ -198,6 +212,11 @@ int main()
     wPackedValues = (WORD)(((WORD)nVersionMinor)<< 8)|(WORD)nVersionMajor;
     nLastError = WSAStartup(wPackedValues, &SocketInfo);
 #endif
+
+    for(k = 0; k < MAX_CLIENTES; k++) {
+        strncpy(clientes[k].nome, "", 15);
+        clientes[k].nome[15] = '\0';
+    }
 
     menu();
 

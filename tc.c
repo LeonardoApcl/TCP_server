@@ -80,6 +80,7 @@ void enviar_msgbroadcast(char *texto){
     mensagem[3] = (char)('0' + (tam / 1) % 10);
 
     // A alterar com a lista de usuários, onde praticamente é um for no socket de mensagens
+    // Alterar para ler a lista de usuários, contar quantos tem e fazer a execução
     int lista_portas[] = {6000, 6001, 6002, 6003};
     int total_usuarios = 4;
 
@@ -98,6 +99,7 @@ void enviar_msgbroadcast(char *texto){
     }
 }
 
+// Para envio é (nome)|(mensagem) para ativar a mensagem direta
 void enviar_msgdireta(char *destinatario, char *texto){
     char mensagem[TAM_MENSAGEM];
     memset(mensagem, 0, TAM_MENSAGEM);
